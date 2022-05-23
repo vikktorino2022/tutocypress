@@ -1,30 +1,21 @@
-import indexPage from '../support/pages/index';
-import articlesPage from '../support/pages/articles';
-
-describe('Searchs tests cases', function(){
-
-    before(function(){
-        cy.log("Ejecutando precondiones  a las pruebas");
+describe('Search element', () =>{
+    it('seaarch for elements with multiple results', ()=>{
+        cy.visit('/');
+        cy.fixture('index').then((index) =>{
+            cy.get(index.searchBox).type('dress');
+            cy.get(index.searchButton).click();
+        })
+        cy.fixture('searchResult').then((searchResult) =>{
+            cy.get(searchResult.title).should('contain','dress');
+        })
     })
-    after(function(){
-
-        cy.log("Ejecutando postcondiciones a las pruebas");
+    it('search for elements with not result', () =>{
+        cy.fixture('index').then((index) => {
+            cy.get(index.searchBox).type('qwety');
+            cy.get(index.searchButton).click();
     })
-    beforeEach(function(){
-        cy.visit('http://automationpractice.com/index.php');
-    })
-    afterEach(function(){
-        cy.log("Poniendo datos en su estado original");
-    })
-
-    it('Searchs dresses',function(){
-        indexPage.search('dress');
-        cy.logSpecFormat('Searching for dresses');
-        articlesPage.verifyArticles('"dress"');
-    })    
-    it('Searchs hat', function () {
-        indexPage.search('hat');
-        articlesPage.verifyArticles('"hat"');
-       
-    })
+        cy.fixture('searchResult').then((searchResult) => {
+            cy.get(searchResult.alert).should('contain', 'No result were found for your search');
+        })
+})
 })

@@ -160,7 +160,7 @@
     "yauzl": "^2.10.0"
   },
   "scripts": {
-    "test": "cypress run"
+    "test": "cypress open"
   },
   "keywords": [
     "qa",
